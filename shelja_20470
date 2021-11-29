@@ -1,0 +1,209 @@
+package com.shelja;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.ArrayList;
+class SpecialGame<T> {
+    T s1;
+    T s2;
+    public SpecialGame(T s1,T s2)
+    {
+        this.s1 = s1;
+        this.s2 = s2;
+    }
+    @SuppressWarnings({ "unchecked" })
+    public T add(T s1, T s2)
+    {
+        try {
+            if(s1 instanceof String)
+            {
+                String temp = (String)s1;
+                return ( (T) (temp).concat((String)s2));
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Type " + s1.getClass() + " is not supported by this method");
+        }
+        return null;
+
+
+    }
+    @SuppressWarnings({ "unchecked", "deprecation" })
+    public T divide(T s1, T s2)
+    {
+        if( s1 instanceof Integer)
+        {
+            try {
+                return ((T)new Integer(((Integer) s1).intValue()/((Integer) s2).intValue()));
+            } catch (ArithmeticException e) {
+
+            }
+        }
+        return ((T)new Integer(((Integer) s1).intValue()/((Integer) s2).intValue()));
+    }
+
+}
+class Game<T> {
+    ArrayList<T> GameTile = new ArrayList<>();
+    public void add(T toyname)
+    {
+        GameTile.add(toyname);
+    }
+    public T get(int index)
+    {
+        return GameTile.get(index);
+    }
+}
+class Cart<T> {
+    ArrayList<T> bucket = new ArrayList<>();
+    public void add(T toyname)
+    {
+        bucket.add(toyname);
+    }
+    public T get(int index)
+    {
+        return bucket.get(index);
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        Game<String> carpet = new Game();
+        Cart<String> cart = new Cart();
+        carpet.add("Rattle");
+        carpet.add("Bicycle");
+        carpet.add("Stacking Toy");
+        carpet.add("Toy Vehicle");
+        carpet.add("Lego");
+        carpet.add("Puzzles");
+        carpet.add("Microscope");
+        carpet.add("Puppet");
+        carpet.add("Ball");
+        carpet.add("Caryons");
+        carpet.add("Musical Instrument");
+        carpet.add("Rubik's Cube");
+        carpet.add("Push Toy");
+        carpet.add("Plush Animals");
+        carpet.add("Blocks");
+        carpet.add("Play Doh");
+        carpet.add("Mickey Mouse");
+        carpet.add("Donald Duck");
+        carpet.add("Iron Man");
+        carpet.add("Hulk");
+        int chances = 1;
+        while(chances < 6)
+        {
+
+            if(chances==1)
+                System.out.println("Hit enter for your first hop");
+            else if(chances==2)
+                System.out.println("Hit enter for your second hop");
+            else if(chances==3)
+                System.out.println("Hit enter for your third hop");
+            else if(chances==4)
+                System.out.println("Hit enter for your fourth hop");
+            else if(chances==5)
+                System.out.println("Hit enter for your fifth hop");
+            int min = 1;
+            int max = 21;
+            int num = (int)(Math.random()*(max-min+1)+min);
+            System.out.println("Your reached at "+num);
+            if(num>20)
+            {
+                if(chances>6) {System.out.println("Game Over");break;}
+
+                System.out.println("You are too energetic and zoomed past all the tiles. Muddy Puddle Splash!");
+                chances++;
+            }
+            else
+            {
+                if(chances>6) {System.out.println("Game Over");break;}
+                if(num%2==0)
+                {
+                    System.out.println("You won a "+ carpet.get(num-1) +" soft toy");
+                    cart.add(carpet.get(num-1));
+                    chances++;
+                }
+                else
+                {
+                    chances++;
+                    System.out.println("Question answer round. Integer or strings?");
+                    String choice_str = s.nextLine();
+                    String choice = choice_str.toLowerCase();
+                    if(choice.equals("integer"))
+                    {
+                        Random rn = new Random();
+                        Integer r1 = rn.nextInt(999);
+                        Integer r2 = rn.nextInt(99);
+                        SpecialGame<Integer> spg = new SpecialGame(r1, r2);
+                        Integer ans = spg.divide(r1,r2);
+                        System.out.println("Calculate the result of "+ r1+ "divided by "+ r2);
+                        int user_ans = s.nextInt();
+                        if(ans==user_ans)
+                        {
+                            System.out.println("Correct Answer");
+                            System.out.println("You won any "+carpet.get(num-1)+" soft toy");
+                            cart.add(carpet.get(num-1));
+                        }
+                        else
+                        {
+                            System.out.println("Incorrect Answer");
+                            System.out.println("You did not won any "+carpet.get(num-1)+" soft toy");
+
+                        }
+                    }
+                    if(choice.equals("strings"))
+                    {
+                        String collection = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                        String generatedString1 = "";
+                        int length = 4;
+                        String generatedString2 = "";
+                        Random rand =  new Random();
+                        char[] text = new char[length];
+                        char[] newText = new char[length];
+                        for(int i = 0;i<length;i++)
+                        {
+                            text[i] = collection.charAt(rand.nextInt(collection.length()));
+                            newText[i] = collection.charAt(rand.nextInt(collection.length()));
+                        }
+                        for(int l = 0;l<length;l++)
+                        {
+                            generatedString1+=text[l];
+                        }
+                        for(int j = 0;j<length;j++)
+                        {
+                            generatedString2+=newText[j];
+                        }
+                        System.out.println("Calculate the concatenation of strings " +generatedString1+ " and "+generatedString2 );
+                        String enterString = s.nextLine();
+                        SpecialGame<String> spg = new SpecialGame(generatedString1, generatedString2);
+                        String required = spg.add(generatedString1, generatedString2);
+                        if(enterString.equals(required))
+                        {
+                            System.out.println("Correct Answer");
+                            System.out.println("You won any "+carpet.get(num-1)+" soft toy");
+                            cart.add(carpet.get(num-1));
+                        }
+                        else
+                        {
+                            System.out.println("Incorrect Answer");
+                            System.out.println("You did not won any "+carpet.get(num-1)+" soft toy");
+
+                        }
+
+                    }
+                }
+            }
+
+
+        }
+        System.out.println("Game Over");
+        for(int i = 0;i<cart.bucket.size();i++)
+        {
+            System.out.print(cart.bucket.get(i)+" ");
+        }
+
+
+    }
+
+}
